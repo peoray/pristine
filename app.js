@@ -6,6 +6,7 @@ const User = require('./models/user');
 const passport = require('passport');
 const localStrategy = require('passport-local');
 const middleware = require('./middleware');
+const authRoutes = require('./routes/auth');
 mongoose.connect('mongodb://localhost:27017/auth_demo', {
         useNewUrlParser: true
     })
@@ -26,6 +27,8 @@ app.use(require('express-session')({
     saveUninitialized: false
 }));
 
+app.use(authRoutes);
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -36,36 +39,5 @@ passport.deserializeUser(User.deserializeUser());
 app.get('/', (req, res) => res.render('home'));
 
 app.get('/secret', middleware.isLoggedIn, (req, res) => res.render('secret'));
-
-app.get('/register', (req, res) => res.render('register'));
-
-app.get('/login', (req, res) => res.render('login'));
-
-app.post('/register', (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    User.register(new User({
-        username
-    }), password, (err, user) => {
-        if (err) {
-            console.log(err);
-            return res.render('register');
-        }
-        passport.authenticate('local')(req, res, () => {
-            res.redirect('/secret');
-        });
-    })
-});
-
-app.post('/login', passport.authenticate('local', {
-        successRedirect: '/secret',
-        failureRedirect: '/login'
-    }),
-    (req, res) => {});
-
-app.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
-});
 
 app.listen(3000, () => console.log('server is listening on port 3000'));
