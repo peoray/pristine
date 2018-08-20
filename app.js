@@ -32,11 +32,16 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+const isLoggedIn = (req, res, next) => {
+    if(rq.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
 
+app.get('/', (req, res) => res.render('home'));
 
-app.get('/', (req, res) => res.send('home'));
-
-app.get('/secret', (req, res) => res.render('secret'));
+app.get('/secret', isLoggedIn, (req, res) => res.render('secret'));
 
 app.get('/register', (req, res) => res.render('register'));
 
@@ -63,5 +68,10 @@ app.post('/login', passport.authenticate('local', {
         failureRedirect: '/login'
     }),
     (req, res) => {});
+
+app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+});
 
 app.listen(3000, () => console.log('server is listening on port 3000'));
