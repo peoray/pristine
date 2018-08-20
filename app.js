@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const User = require('./models/user');
 const passport = require('passport');
 const localStrategy = require('passport-local');
+const middleware = require('./middleware');
 mongoose.connect('mongodb://localhost:27017/auth_demo', {
         useNewUrlParser: true
     })
@@ -32,16 +33,9 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const isLoggedIn = (req, res, next) => {
-    if(req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
 app.get('/', (req, res) => res.render('home'));
 
-app.get('/secret', isLoggedIn, (req, res) => res.render('secret'));
+app.get('/secret', middleware.isLoggedIn, (req, res) => res.render('secret'));
 
 app.get('/register', (req, res) => res.render('register'));
 
