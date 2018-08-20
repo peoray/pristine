@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const User = require('./models/user');
+// const localStrategy = require('passport-local');
 mongoose.connect('mongodb://localhost:27017/auth_demo', {
         useNewUrlParser: true
     })
@@ -12,7 +14,20 @@ mongoose.connect('mongodb://localhost:27017/auth_demo', {
     });
 
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded)
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+
+app.use(require('express-session')({
+    secret: 'Fuck the World!!!',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialized());
+app.use(passport.session());
+passport.serializeUser(User.serializeUser);
+passport.deserializeUser(User.deserializeUser);
 
 
 
