@@ -33,7 +33,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 const isLoggedIn = (req, res, next) => {
-    if(rq.isAuthenticated()) {
+    if(req.isAuthenticated()) {
         return next();
     }
     res.redirect('/login');
