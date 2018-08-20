@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const User = require('./models/user');
+const passport = require('passport');
 // const localStrategy = require('passport-local');
 mongoose.connect('mongodb://localhost:27017/auth_demo', {
         useNewUrlParser: true
@@ -24,8 +25,9 @@ app.use(require('express-session')({
     saveUninitialized: false
 }));
 
-app.use(passport.initialized());
+app.use(passport.initialize());
 app.use(passport.session());
+
 passport.serializeUser(User.serializeUser);
 passport.deserializeUser(User.deserializeUser);
 
@@ -37,6 +39,14 @@ app.get('/', (req, res) => {
 
 app.get('/secret', (req, res) => {
     res.render('secret');
+});
+
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+app.get('/login', (req, res) => {
+    res.render('login');
 });
 
 app.listen(3000, () => console.log('server is listening on port 3000'));
