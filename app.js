@@ -28,8 +28,8 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(User.serializeUser);
-passport.deserializeUser(User.deserializeUser);
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 
@@ -47,6 +47,20 @@ app.get('/register', (req, res) => {
 
 app.get('/login', (req, res) => {
     res.render('login');
+});
+
+app.post('/register', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    User.register(new User({username}), password, (err, user) => {
+        if (err) {
+            console.log(err);
+            return res.render('register');
+        }
+        passport.authenticate('local')(req, res, () => {
+            res.redirect('/secret');
+        });
+    })
 });
 
 app.listen(3000, () => console.log('server is listening on port 3000'));
