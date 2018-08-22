@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const User = require('./models/user');
 const passport = require('passport');
-const localStrategy = require('passport-local');
+const LocalStrategy = require('passport-local');
 // requiring routes
 const authRoutes = require('./routes/auth');
 const miscRoutes = require('./routes/misc');
@@ -33,16 +33,16 @@ app.use(require('express-session')({
     saveUninitialized: false
 }));
 
-// middleware for requiring routes
-app.use(authRoutes);
-app.use(miscRoutes);
-
 // passport configs
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new localStrategy(User.authenticate()));
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// middleware for requiring routes
+app.use(authRoutes);
+app.use(miscRoutes);
 
 // configure port for server to listen
 const port = 3000
