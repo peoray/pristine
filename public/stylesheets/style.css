@@ -1,12 +1,52 @@
-/* Sign Up page styles */
+/* ase stylings */
 
 body {
     margin: 0;
     padding: 0;
     background: #efefef;
+    /* background: red; */
     font-weight: 300;
+}
+
+nav {
+    height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, .5);
+    box-sizing: border-box;
+}
+
+nav .navbar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav li {
+    /* padding: 0 15px */
+}
+
+nav .brand {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+nav a {
+    text-decoration: none;
+    color: rgb(17, 15, 15);
     font-size: 16px;
 }
+
+/* Sign Up page styles */
 
 .register {
     color: #777;
@@ -149,10 +189,10 @@ body {
 }
 
 label {
-     margin: 0;
-     padding: 0;
-     font-weight: bold;
-     font-size: 12px;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-size: 12px;
 }
 
 .login-box input {
@@ -169,6 +209,7 @@ label {
     outline: 0;
     color: #fff;
     font-size: 16px;
+    transition: .2s ease;
 }
 
 .login-box input[type='submit'] {
@@ -176,9 +217,10 @@ label {
     outline: 0;
     height: 40px;
     background: #fb2525;
-    color: #fff;font-size: 18px;
+    color: #fff;
+    font-size: 18px;
     border-radius: 20px;
-
+    transition: .2s ease;
 }
 
 .login-box input[type='submit']:hover {
