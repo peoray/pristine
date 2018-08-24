@@ -1,20 +1,14 @@
-<h2>This is the login page</h2>
-<form action="/login" method="POST">
-    <label for="">Username</label>
-    <input type="text" name="username">
+<% include partials/header %>
 
-    <label for="">Password</label>
-    <input type="password" name="password">
-
-    <button>Submit</button>
+<form action="/login" method="POST" class="login-box">
+    <h1>Login Here</h1>
+    <label>Username</label>
+    <input type="text" name='username' placeholder="Enter Username">
+    <label>Password</label>
+    <input type="password" name='password' placeholder="Enter Password">
+    <input type="submit" value="Login">
+    <a href="#">Lost your password?</a>
+    <a href="/register">Don't have an account yet?</a>
 </form>
 
-<li>
-    <a href="/register">Register</a>
-</li>
-<li>
-    <a href="/login">Login</a>
-</li>
-<li>
-    <a href="logout">Logout</a>
-</li>
+<% include partials/footer %>
