@@ -1,0 +1,135 @@
+/* Sign Up page styles */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #efefef;
+    font-weight: 300;
+    color: #777;
+    font-size: 16px;
+}
+
+.register {
+    position: relative;
+    margin: 5% auto;
+    height: 400px;
+    width: 600px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .6);
+}
+
+.register .left-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 300px;
+    height: 400px;
+}
+
+.register h1 {
+    margin: 0 0 20px 0;
+    font-weight: 300;
+    font-size: 28px;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='email'] {
+    display: block;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    padding: 4px;
+    width: 220px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #aaa;
+    font-size: 15px;
+    font-weight: 400;
+    transition: .2s ease;
+}
+
+input[type='checkbox'] {
+    margin-top: -20px;
+}
+
+input[type='submit'] {
+    margin-bottom: 28px;
+    /* margin-top: 30px; */
+    width: 120px;
+    height: 32px;
+    background: #f44336;
+    border-radius: 2px;
+    font-weight: 500px;
+    color: #fff;
+    text-transform: uppercase;
+    transition: .2s ease;
+    cursor: pointer;
+    border: 0;
+}
+
+input[type='submit']:hover,
+input[type='submit']:focus {
+    background: #ff5722;
+    transition: .2s ease;
+}
+
+.register .right-box {
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 300px;
+    height: 400px;
+    background-image: url('../images/resort3.jpg');
+    background-size: cover;
+    background-position: center center;
+}
+
+.register .right-box .social-sign-up {
+    display: block;
+    margin-bottom: 40px;
+    font-size: 28px;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, .6);
+}
+
+.right-box button {
+    margin-bottom: 20px;
+    width: 220px;
+    height: 36px;
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: 500px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.google {
+    background: #dd4b39;
+}
+
+.facebook {
+    background: #32508e;
+}
+
+.twitter {
+    background: #55acee;
+}
+
+.register .or {
+    position: absolute;
+    top: 180px;
+    left: 280px;
+    width: 40px;
+    height: 40px;
+    background: #efefef;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .6);
+}

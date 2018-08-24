@@ -2,12 +2,14 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const User = require('./models/user');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 // requiring routes
+// const passportSetup = require('./config/passport');
 const authRoutes = require('./routes/auth');
 const miscRoutes = require('./routes/misc');
+
 // requiring mongoose db
 const mongoose = require('mongoose');
 // configure mongoose
@@ -22,6 +24,7 @@ mongoose.connect('mongodb://localhost:27017/auth_demo', {
 
 // set views template to ejs
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 // configure body parser
 app.use(bodyParser.urlencoded({
     extended: false
@@ -32,6 +35,8 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
+
+
 
 // passport configs
 app.use(passport.initialize());

@@ -1,20 +1,26 @@
-<h2>This is the register page</h2>
-<form action="/register" method="POST">
-    <label for="">Username</label>
-    <input type="text" name="username">
+<% include partials/header %>
 
-    <label for="">Password</label>
-    <input type="password" name="password">
+<form action="/register" method='POST' class='register'>
+    <div class="left-box">
+        <h1>Sign Up</h1>
+        <input type="text" name='fullName' placeholder="Enter your fullname">
+        <input type="text" name='username' placeholder="Enter your username">
+        <input type="email" name='email' placeholder="Enter your email">
+        <input type="password" name='password' placeholder="Enter your password">
+        <!-- <input type="checkbox"> show password -->
+        <!-- <input type="password" placeholder="Retype your password"> -->
+        <!-- <input type="checkbox"> show password -->
+        <input type="submit" value="Sign Up">
+    </div>
 
-    <button>Submit</button>
+    <div class="right-box">
+        <span class="social-sign-up">Sign Up with <br> Social Network</span>
+        <button class="social google">Sign Up with Google+</button>
+        <button class="social facebook">Sign Up with Facebook</button>
+        <button class="social twitter">Sign Up with Twitter</button>
+    </div>
+
+    <div class="or">OR</div>
 </form>
 
-<li>
-    <a href="/register">Register</a>
-</li>
-<li>
-    <a href="/login">Login</a>
-</li>
-<li>
-    <a href="logout">Logout</a>
-</li>
+<% include partials/footer %>
