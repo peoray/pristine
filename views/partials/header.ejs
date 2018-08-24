@@ -18,15 +18,21 @@
                 <a href="/">PRISTINE</a>
             </div>
             <ul>
+            <% if(!currentUser) { %>
                 <li>
                     <a href="/register">Register</a>
                 </li>
                 <li>
                     <a href="/login">Login</a>
                 </li>
+                <% } else { %>
+                <li>
+                    <a href="#">Login as <%= currentUser.username %></a>
+                </li>
                 <li>
                     <a href='/logout'>Logout</a>
                 </li>
+                <% } %>
             </ul>
         </div>
     </nav>

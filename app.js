@@ -36,14 +36,18 @@ app.use(require('express-session')({
     saveUninitialized: false
 }));
 
-
-
 // passport configs
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// make the user available to every template
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 // middleware for requiring routes
 app.use(authRoutes);
