@@ -2,13 +2,14 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const User = require('./models/user');
+// const passport = require('passport');
+// const LocalStrategy = require('passport-local');
+// const User = require('./models/user');
 // requiring routes
 // const passportSetup = require('./config/passport');
 const authRoutes = require('./routes/auth');
 const miscRoutes = require('./routes/misc');
+require('./config/passport');
 
 // requiring mongoose db
 const mongoose = require('mongoose');
@@ -30,18 +31,18 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-app.use(require('express-session')({
-    secret: 'Fuck the World!!!',
-    resave: false,
-    saveUninitialized: false
-}));
+// app.use(require('express-session')({
+//     secret: 'Fuck the World!!!',
+//     resave: false,
+//     saveUninitialized: false
+// }));
 
 // passport configs
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// app.use(passport.initialize());
+// app.use(passport.session());
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 // make the user available to every template
 app.use((req, res, next) => {
