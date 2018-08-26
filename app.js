@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 // const passportSetup = require('./config/passport');
 const authRoutes = require('./routes/auth');
 const miscRoutes = require('./routes/misc');
-require('./config/passport');
+require('./config/passport')(app);
 
 // requiring mongoose db
 const mongoose = require('mongoose');
