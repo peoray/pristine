@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const miscRoutes = require('./routes/misc');
-require('./config/passport')(app);
+require('./config/passport-local')(app);
 
 // requiring mongoose db
 const mongoose = require('mongoose');
