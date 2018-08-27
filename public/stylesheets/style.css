@@ -132,16 +132,25 @@ nav a {
     text-shadow: 0 2px 4px rgba(0, 0, 0, .6);
 }
 
-.right-box button {
-    margin-bottom: 20px;
-    width: 220px;
-    height: 36px;
-    border: none;
+.right-box .btn {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px 20px;
     border-radius: 2px;
-    color: #fff;
-    font-weight: 500px;
     cursor: pointer;
     transition: .2s ease;
+    font-size: 14px;
+    outline: none;
+}
+
+.right-box .btn:nth-child(4) {
+    margin-bottom: 0;
+}
+
+.right-box a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
 }
 
 .google {
@@ -176,7 +185,7 @@ nav a {
     width: 400px;
     background: #000;
     color: #fff;
-    height: 420px;
+    height: 480px;
     box-sizing: border-box;
     padding: 70px 30px;
 }

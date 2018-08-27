@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const authRoutes = require('./routes/auth');
+const localAuthRoutes = require('./routes/local-auth');
 const miscRoutes = require('./routes/misc');
 require('./config/passport-local')(app);
 
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 });
 
 // middleware for requiring routes
-app.use(authRoutes);
+app.use(localAuthRoutes);
 app.use(miscRoutes);
 
 // configure port for server to listen

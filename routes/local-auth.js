@@ -39,4 +39,10 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
+// Social hanglers
+
+router.get('/auth/google', (req, res) => {
+    res.send('You are connected to Google!');
+});
+
 module.exports = router;

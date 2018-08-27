@@ -1,26 +1,33 @@
 <% include partials/header %>
 
-<form action="/register" method='POST' class='register'>
-    <div class="left-box">
-        <h1>Sign Up</h1>
-        <input type="text" name='fullName' placeholder="Enter your fullname">
-        <input type="text" name='username' placeholder="Enter your username">
-        <input type="email" name='email' placeholder="Enter your email">
-        <input type="password" name='password' placeholder="Enter your password">
-        <!-- <input type="checkbox"> show password -->
-        <!-- <input type="password" placeholder="Retype your password"> -->
-        <!-- <input type="checkbox"> show password -->
-        <input type="submit" value="Sign Up">
-    </div>
+    <form action="/register" method='POST' class='register'>
+        <div class="left-box">
+            <h1>Sign Up</h1>
+            <input type="text" name='fullName' placeholder="Enter your fullname">
+            <input type="text" name='username' placeholder="Enter your username">
+            <input type="email" name='email' placeholder="Enter your email">
+            <input type="password" name='password' placeholder="Enter your password">
+            <!-- <input type="checkbox"> show password -->
+            <!-- <input type="password" placeholder="Retype your password"> -->
+            <!-- <input type="checkbox"> show password -->
+            <input type="submit" value="Sign Up">
+        </div>
 
-    <div class="right-box">
-        <span class="social-sign-up">Sign Up with <br> Social Network</span>
-        <button class="social google">Sign Up with Google+</button>
-        <button class="social facebook">Sign Up with Facebook</button>
-        <button class="social twitter">Sign Up with Twitter</button>
-    </div>
+        <div class="right-box">
+            <span class="social-sign-up">Sign Up with
+                <br> Social Network</span>
+            <a href="/auth/google" class="btn google">
+                Sign Up with Google+
+            </a>
+            <a href="/auth/facebook" class="btn facebook">
+                Sign Up with Facebook
+            </a>
+            <a href="/auth/twitter" class="btn twitter">
+                Sign Up with Twitter
+            </a>
+        </div>
 
-    <div class="or">OR</div>
-</form>
+        <div class="or">OR</div>
+    </form>
 
-<% include partials/footer %>
+    <% include partials/footer %>
