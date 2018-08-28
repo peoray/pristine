@@ -1,11 +1,12 @@
 // dependencies for the project
 const express = require('express');
 const app = express();
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const localAuthRoutes = require('./routes/local-auth');
 const miscRoutes = require('./routes/misc');
 require('./config/passport-local')(app);
-
+require('./config/passport-social')(app);
 // requiring mongoose db
 const mongoose = require('mongoose');
 // configure mongoose

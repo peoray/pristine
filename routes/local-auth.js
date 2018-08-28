@@ -3,6 +3,14 @@ const router = require('express').Router();
 const passport = require('passport');
 const User = require('../models/user');
 
+// middleware to check
+// const isLoggedIn = (req, res, next) => {
+//     if (req.user) {
+//         return next();
+//     }
+//     res.redirect('/login');
+// }
+
 // route to sign up page
 router.get('/register', (req, res) => res.render('register'));
 
@@ -28,10 +36,10 @@ router.post('/register', (req, res) => {
 
 //handles user login
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/secret',
-    failureRedirect: '/login'
-}),
-(req, res) => {});
+        successRedirect: '/secret',
+        failureRedirect: '/login'
+    }),
+    (req, res) => {});
 
 //handles user logout
 router.get('/logout', (req, res) => {
@@ -39,10 +47,19 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-// Social hanglers
+// Social handlers
 
-router.get('/auth/google', (req, res) => {
-    res.send('You are connected to Google!');
-});
+router.get('/auth/google',
+    passport.authenticate('google', {
+        scope: ['profile']
+    }));
+
+router.get('/auth/google/redirect', passport.authenticate('google', {
+        failureRedirect: '/login'
+    }),
+    (req, res) => {
+        // Successful authentication, redirect home.
+        res.redirect('/secret');
+    });
 
 module.exports = router;
