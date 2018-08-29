@@ -48,7 +48,7 @@ router.get('/logout', (req, res) => {
 });
 
 // Social handlers
-
+//google
 router.get('/auth/google',
     passport.authenticate('google', {
         scope: ['profile']
@@ -60,6 +60,20 @@ router.get('/auth/google/redirect', passport.authenticate('google', {
     (req, res) => {
         // Successful authentication, redirect home.
         res.redirect('/secret');
+    });
+
+// facebook
+router.get('/auth/facebook',
+    passport.authenticate('facebook', {
+        scope: ['email', 'user_likes']
+    }));
+
+router.get('/auth/facebook/redirect', passport.authenticate('facebook', {
+        failureRedirect: '/login'
+    }),
+    (req, res) => {
+        // Successful authentication, redirect home.
+        res.redirect('/secret'); 
     });
 
 module.exports = router;

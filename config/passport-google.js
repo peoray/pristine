@@ -10,10 +10,10 @@ module.exports = app => {
             secret: 'Fuck the World!!!',
             resave: false,
             saveUninitialized: false,
-            // cookie: {
-            //     secure: true,
-            //     maxAge: 24 * 60 * 60 * 1000
-            // }
+            cookie: {
+                secure: true,
+                maxAge: 24 * 60 * 60 * 1000
+            }
         })
     );
     // passport configs
@@ -39,7 +39,7 @@ module.exports = app => {
                         googleId: profile.id
                     }).save().then(newUser => {
                         // console.log(`You have created a new user ${newUser}`);
-                        done(null, currentUser);
+                        done(null, newUser);
                     })
                 })
             })

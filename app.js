@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 const localAuthRoutes = require('./routes/local-auth');
 const miscRoutes = require('./routes/misc');
 require('./config/passport-local')(app);
-require('./config/passport-social')(app);
+require('./config/passport-google')(app);
+require('./config/passport-fb')(app);
 // requiring mongoose db
 const mongoose = require('mongoose');
 // configure mongoose
