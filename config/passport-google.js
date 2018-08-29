@@ -22,8 +22,8 @@ module.exports = app => {
     passport.use(
         new GoogleStrategy({
                 callbackURL: '/auth/google/redirect',
-                clientID: process.env.CLIENT_ID,
-                clientSecret: process.env.CLIENT_SECRET
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET
             },
             (accessToken, refreshToken, profile, done) => {
                 // console.log(profile);
