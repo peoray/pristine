@@ -1,15 +1,16 @@
 // dependencies required for routes
 const router = require('express').Router();
-const passport = require('passport');
+// const passport = require('passport');
+const Joi = require('joi');
 const User = require('../models/user');
 
-// middleware to check
-// const isLoggedIn = (req, res, next) => {
-//     if (req.user) {
-//         return next();
-//     }
-//     res.redirect('/login');
-// }
+const userSchema = Joi.object().keys({
+    name: Joi.string().required(),
+    username: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
+    password2: Joi.any().valid(Joi.ref('password')).required()
+});
 
 // route to sign up page
 router.get('/register', (req, res) => res.render('register'));
@@ -17,63 +18,44 @@ router.get('/register', (req, res) => res.render('register'));
 // route to login page
 router.get('/login', (req, res) => res.render('login'));
 
-//handles user sign up
-router.post('/register', (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    User.register(new User({
-        username
-    }), password, (err, user) => {
-        if (err) {
-            console.log(err);
-            return res.render('register');
+// handles user sign up
+router.post('/register', async (req, res, next) => {
+    try {
+        //  console.log(req.body);
+        const result = Joi.validate(req.body, userSchema);
+
+        if (result.error) {
+            //  req.flash
+            console.log(result.error.details[0].message)
+            return res.redirect('/register');
         }
-        passport.authenticate('local')(req, res, () => {
-            res.redirect('/secret');
+        console.log('passed')
+
+        const user = await User.findOne({
+            'email': result.value.email
         });
-    })
-});
 
-//handles user login
-router.post('/login', passport.authenticate('local', {
-        successRedirect: '/secret',
-        failureRedirect: '/login'
-    }),
-    (req, res) => {});
+        if (user) {
+            // req.flash
+            return res.redirect('/register');
+        }
 
-//handles user logout
-router.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
-});
+        // hash password
+        const hash = await User.hashPassword(result.value.password);
+        // console.log(hash);
 
-// Social handlers
-//google
-router.get('/auth/google',
-    passport.authenticate('google', {
-        scope: ['profile']
-    }));
+        delete result.value.password2;
+        result.value.password = hash;
+        // console.log(result.value);
+        const newUser = await new User(result.value);
+        await newUser.save();
+        // req.flash
+        res.render('secret');
 
-router.get('/auth/google/redirect', passport.authenticate('google', {
-        failureRedirect: '/login'
-    }),
-    (req, res) => {
-        // Successful authentication, redirect home.
-        res.redirect('/secret');
-    });
-
-// facebook
-router.get('/auth/facebook',
-    passport.authenticate('facebook', {
-        scope: ['email', 'user_likes']
-    }));
-
-router.get('/auth/facebook/redirect', passport.authenticate('facebook', {
-        failureRedirect: '/login'
-    }),
-    (req, res) => {
-        // Successful authentication, redirect home.
-        res.redirect('/secret'); 
-    });
+        console.log(newUser);
+    } catch (error) {
+        next(error);
+    }
+})
 
 module.exports = router;

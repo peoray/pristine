@@ -3,13 +3,20 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const bodyParser = require('body-parser');
-const localAuthRoutes = require('./routes/local-auth');
-const miscRoutes = require('./routes/misc');
-require('./config/passport-local')(app);
-require('./config/passport-google')(app);
-require('./config/passport-fb')(app);
+const flash = require('connect-flash');
+const passport = require('passport');
+const cookiepParser = require('cookie-parser');
+const session = require('express-session');
+// var logger = require('morgan');
+// const expresValidator = require('express-validator');
+// const localAuthRoutes = require('./routes/local-auth');
+// const miscRoutes = require('./routes/misc');
+// require('./config/passport-local')(passport);
+// require('./config/passport-google')(app);
+// require('./config/passport-fb')(app);
 // requiring mongoose db
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 // configure mongoose
 mongoose.connect('mongodb://localhost:27017/auth_demo', {
         useNewUrlParser: true
@@ -20,6 +27,8 @@ mongoose.connect('mongodb://localhost:27017/auth_demo', {
         process.exit(1);
     });
 
+// app.use(logger('dev'));
+app.use(cookiepParser());
 // set views template to ejs
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -34,10 +43,34 @@ app.use((req, res, next) => {
     next();
 });
 
+// app.use(flash());
+// required for passport
+app.use(session({
+    secret: 'ilovescotchscotchyscotchscotch',
+    resave: false,
+    saveUninitialized: false
+})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+app.use((req, res, next) => {
+    // res.locals.success = req.flash('success');
+    // res.locals.error = req.flash('error');
+    next();
+})
+
+// app.use((req, res, next) => {
+//     const error = new Error('Not Found');
+//     error.status = 404;
+//     next(error);
+// });
+
+// app.use(ExpressValidator)
+
 // middleware for requiring routes
-app.use(localAuthRoutes);
-app.use(miscRoutes);
+app.use(require('./routes/local-auth'));
+app.use(require('./routes/misc'));
 
 // configure port for server to listen
-const port = 3000
+const port = 3000;
 app.listen(port, () => console.log('server is listening on port 3000'));
