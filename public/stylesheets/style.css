@@ -1,5 +1,4 @@
 /* ase stylings */
-
 body {
     margin: 0;
     padding: 0;
@@ -47,7 +46,6 @@ nav a {
 }
 
 /* Sign Up page styles */
-
 .register {
     color: #777;
     position: relative;
@@ -179,7 +177,6 @@ nav a {
 }
 
 /* Login styles */
-
 .login-box {
     margin: 5% auto;
     width: 400px;
@@ -248,4 +245,24 @@ label {
 
 .login-box a:hover {
     color: #fff;
+}
+
+/* Flash message styling */
+.flash {
+    max-width: 600px;
+    padding: 8px;
+    margin: 10px auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 5px;
+    color: #f4f4f4;
+}
+
+.error {
+    background: red;
+}
+
+.success {
+    background: green;
 }

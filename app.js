@@ -5,15 +5,13 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const passport = require('passport');
-const cookiepParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
-// var logger = require('morgan');
-// const expresValidator = require('express-validator');
-// const localAuthRoutes = require('./routes/local-auth');
-// const miscRoutes = require('./routes/misc');
-// require('./config/passport-local')(passport);
-// require('./config/passport-google')(app);
-// require('./config/passport-fb')(app);
+var logger = require('morgan');
+require('./config/passport-local');
+require('./config/passport-google');
+require('./config/passport-fb');
+
 // requiring mongoose db
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -27,8 +25,8 @@ mongoose.connect('mongodb://localhost:27017/auth_demo', {
         process.exit(1);
     });
 
-// app.use(logger('dev'));
-app.use(cookiepParser());
+app.use(logger('dev'));
+app.use(cookieParser());
 // set views template to ejs
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -36,41 +34,33 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+app.use(bodyParser.json());
 
-// make the user available to every template
-app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
-    next();
-});
-
-// app.use(flash());
 // required for passport
 app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch',
+    secret: 'FUCK LOVE !!!',
     resave: false,
-    saveUninitialized: false
-})); // session secret
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60000
+    }
+})); 
+
+app.use(flash());
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+app.use(passport.session()); 
 
+// make the user available to every template and the flash messages
 app.use((req, res, next) => {
-    // res.locals.success = req.flash('success');
-    // res.locals.error = req.flash('error');
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
     next();
-})
-
-// app.use((req, res, next) => {
-//     const error = new Error('Not Found');
-//     error.status = 404;
-//     next(error);
-// });
-
-// app.use(ExpressValidator)
+});
 
 // middleware for requiring routes
 app.use(require('./routes/local-auth'));
 app.use(require('./routes/misc'));
 
 // configure port for server to listen
-const port = 3000;
-app.listen(port, () => console.log('server is listening on port 3000'));
+app.listen(process.env.PORT, () => console.log('server is listening on port 3000'));

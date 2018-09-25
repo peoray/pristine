@@ -18,7 +18,7 @@
                 <a href="/">PRISTINE</a>
             </div>
             <ul>
-            <% if(!currentUser) { %>
+                <% if(!currentUser) { %>
                 <li>
                     <a href="/register">Register</a>
                 </li>
@@ -27,7 +27,8 @@
                 </li>
                 <% } else { %>
                 <li>
-                    <a href="#">Login as <%= currentUser.username %></a>
+                    <a href="#">Login as
+                        <%= currentUser.username %></a>
                 </li>
                 <li>
                     <a href='/logout'>Logout</a>
@@ -36,3 +37,14 @@
             </ul>
         </div>
     </nav>
+
+    <% if (error && error.length > 0) { %>
+        <div class="flash error">
+            <%= error %>
+        </div>
+    <% } %>
+    <% if (success && success.length > 0) { %>
+        <div class="flash success">
+            <%= success %>
+        </div>
+    <% } %>

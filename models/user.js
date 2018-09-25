@@ -1,42 +1,64 @@
 const mongoose = require('mongoose');
-// const passportLocalMongoose = require('passport-local-mongoose');
 const bcrypt = require('bcryptjs');
-// var findOrCreate = require('mongoose-findorcreate');
 
-const Schema = mongoose.Schema;
+const {
+    Schema
+} = mongoose;
 
 const userSchema = new Schema({
-    name: {
-        type: String,
-        required: true
+    local: {
+        name: {
+            type: String,
+        },
+        username: {
+            type: String,
+            index: true,
+            unique: true
+        },
+        email: {
+            type: String,
+            unique: true,
+            lowercase: true
+        },
+        password: {
+            type: String,
+        },
+        secretToken: {
+            type: String
+        },
+        active: {
+            type: Boolean
+        }
     },
-    username: {
-        type: String,
-        index: true,
-        required: true,
-        unique: true
+    google: {
+        id: String,
+        // token: String,
+        email: String,
+        username: String
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true
-    },
-    password: {
-        type: String,
-        required: true
+    facebook: {
+        id: String,
+        // token: String,
+        email: String,
+        username: String
     }
 });
 
-// userSchema.plugin(passportLocalMongoose);
-// userSchema.plugin(findOrCreate);
 module.exports = mongoose.model('User', userSchema);
 
-module.exports.hashPassword = async (password) => {
+module.exports.hashPassword = async password => {
     try {
         const salt = await bcrypt.genSaltSync(10);
         return await bcrypt.hash(password, salt);
     } catch (error) {
         throw new Error('Hashing failed ', error);
+    }
+}
+
+module.exports.comparePassword = async (inputPassword, hashedPassword) => {
+    try {
+        return await bcrypt.compare(inputPassword, hashedPassword);
+    } catch (error) {
+        throw new Error('comparing failed', error);
     }
 }
