@@ -45,7 +45,7 @@ const userSchema = new Schema({
 });
 
 module.exports = mongoose.model('User', userSchema);
-
+// hash password before saving to db
 module.exports.hashPassword = async password => {
     try {
         const salt = await bcrypt.genSaltSync(10);
@@ -54,7 +54,7 @@ module.exports.hashPassword = async password => {
         throw new Error('Hashing failed ', error);
     }
 }
-
+// compare password in db and user password input (login)
 module.exports.comparePassword = async (inputPassword, hashedPassword) => {
     try {
         return await bcrypt.compare(inputPassword, hashedPassword);

@@ -9,8 +9,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 var logger = require('morgan');
 require('./config/passport-local');
-require('./config/passport-google');
-require('./config/passport-fb');
+// require('./config/passport-google');
+// require('./config/passport-fb');
 
 // requiring mongoose db
 const mongoose = require('mongoose');
@@ -31,14 +31,14 @@ app.use(cookieParser());
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 // configure body parser
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-app.use(bodyParser.json());
 
 // required for passport
 app.use(session({
-    secret: 'FUCK LOVE !!!',
+    secret: 'FUCK LOVE!!!',
     resave: false,
     saveUninitialized: false,
     cookie: {

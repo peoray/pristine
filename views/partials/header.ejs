@@ -12,6 +12,7 @@
 </head>
 
 <body>
+
     <nav>
         <div class="navbar">
             <div class="brand">
@@ -28,7 +29,7 @@
                 <% } else { %>
                 <li>
                     <a href="#">Login as
-                        <%= currentUser.username %></a>
+                        <%= currentUser.local.username %></a>
                 </li>
                 <li>
                     <a href='/logout'>Logout</a>
@@ -39,12 +40,12 @@
     </nav>
 
     <% if (error && error.length > 0) { %>
-        <div class="flash error">
-            <%= error %>
-        </div>
+    <div class="flash error">
+        <%= error %>
+    </div>
     <% } %>
     <% if (success && success.length > 0) { %>
-        <div class="flash success">
-            <%= success %>
-        </div>
+    <div class="flash success">
+        <%= success %>
+    </div>
     <% } %>

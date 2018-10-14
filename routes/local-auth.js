@@ -4,10 +4,10 @@ const passport = require('passport');
 const Joi = require('joi');
 const User = require('../models/user');
 const middleware = require('../middleware');
-const randomstring = require('randomstring');
-const mailer = require('../config/mailer');
+// const randomstring = require('randomstring');
+// const mailer = require('../config/mailer');
 
-
+// validation for user sign-up data
 const userSchema = Joi.object().keys({
     name: Joi.string().required(),
     username: Joi.string().required(),
@@ -28,7 +28,7 @@ router.post('/register', async (req, res, next) => {
         const result = Joi.validate(req.body, userSchema);
 
         if (result.error) {
-            req.flash('error', 'Invalid data');
+            req.flash('error', 'Invalid data. Please try again!');
             return res.redirect('/register');
         }
 
@@ -42,30 +42,14 @@ router.post('/register', async (req, res, next) => {
         }
 
         // hash password
-        const hash = await User.hashPassword(result.value.password);
-        // generate secret token
-        const secretToken = randomstring.generate();
-
-        result.value.secretToken = secretToken;
-        result.value.active = false;
-
+        const hashedPassword = await User.hashPassword(result.value.password);
         delete result.value.password2;
-        result.value.password = hash;
+        result.value.password = hashedPassword;
         const newUser = await new User();
         newUser.local = result.value;
         await newUser.save();
-        // compose email
-        const html = `
-            <h1>Hi there!</h1>
-            <p>Thank you for registering</p>
-            <p>Please confirm your email by copying in the token </p>
-            <p>Secret Token: ${secretToken}</p>
-            <p>on the following page <a href='http://localhost:3000/verify'>${req.headers.host}</a></p>
-        `;
-        // send the email
-        await mailer.sendMail('peoray@yahoo.com', result.value.email, 'Please, verify your email', html)
-        req.flash('success', 'Please check your email');
-        res.redirect('/verify');
+        req.flash('success', 'registered successfully');
+        res.redirect('/secret');
     } catch (error) {
         next(error);
     }
@@ -77,57 +61,6 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
 }));
-
-router.post('/verify', async (req, res, next) => {
-    try {
-        const {
-            secretToken
-        } = req.body;
-        // find account that matches the token
-        const user = await User.findOne({
-            'secretToken': secretToken
-        });
-        if (!user) {
-            req.flash('error', 'No User Found!');
-            return res.redirect('/register');
-        }
-        user.active = true;
-        user.secretToken = '';
-        await user.save();
-        req.flash('success', 'You need log in now');
-        res.redirect('/login');
-    } catch (error) {
-        next(error);
-    }
-});
-
-//google
-router.get('/auth/google',
-    passport.authenticate('google', {
-        scope: ['profile']
-    }));
-
-router.get('/auth/google/redirect', passport.authenticate('google', {
-        failureRedirect: '/login'
-    }),
-    (req, res) => {
-        // Successful authentication, redirect home.
-        res.redirect('/secret');
-    });
-
-// facebook
-router.get('/auth/facebook',
-    passport.authenticate('facebook', {
-        scope: ['email', 'user_likes']
-    }));
-
-router.get('/auth/facebook/redirect', passport.authenticate('facebook', {
-        failureRedirect: '/login'
-    }),
-    (req, res) => {
-        // Successful authentication, redirect home.
-        res.redirect('/secret');
-    });
 
 //handles user logout
 router.get('/logout', middleware.isLoggedIn, (req, res) => {
