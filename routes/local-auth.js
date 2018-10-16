@@ -4,8 +4,8 @@ const passport = require('passport');
 const Joi = require('joi');
 const User = require('../models/user');
 const middleware = require('../middleware');
-// const randomstring = require('randomstring');
-// const mailer = require('../config/mailer');
+const randomstring = require('randomstring');
+const mailer = require('../config/mailer');
 
 // validation for user sign-up data
 const userSchema = Joi.object().keys({
@@ -45,11 +45,56 @@ router.post('/register', async (req, res, next) => {
         const hashedPassword = await User.hashPassword(result.value.password);
         delete result.value.password2;
         result.value.password = hashedPassword;
+
+        // generate secret token
+        const secretToken = randomstring.generate();
+        result.value.secretToken = secretToken;
+        result.value.active = false;
         const newUser = await new User();
         newUser.local = result.value;
         await newUser.save();
-        req.flash('success', 'registered successfully');
-        res.redirect('/secret');
+        // compose email
+        const html = `
+            <h1>Hi there!</h1>
+            <p>Thank you for registering</p>
+            <p>Please confirm your email by copying in the token </p>
+            <p>Secret Token: ${secretToken}</p>
+            <p>on the following page <a href='http://localhost:3000/verify'>${req.headers.host}/verify</a></p>
+            <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
+            `;
+        // send the email
+        await mailer.sendMail('peoray@yahoo.com', result.value.email, 'Please, verify your email', html)
+        req.flash('success', 'Please check your email');
+        res.redirect('/verify');
+    } catch (error) {
+        next(error);
+    }
+});
+
+// route to verify account page
+router.get('/verify', middleware.isNotLoggedIn, async (req, res) => res.render('verify'));
+
+// handles account verification
+router.post('/verify', async (req, res, next) => {
+    try {
+        const {
+            secretToken
+        } = req.body;
+        // check if email account matches the token
+        const user = await User.findOne({
+            'local.secretToken': secretToken
+        });
+        // if it doesn't
+        if (!user) {
+            req.flash('error', 'No User Found!');
+            return res.redirect('/verify');
+        }
+        // if it does
+        user.local.active = true;
+        user.local.secretToken = '';
+        await user.save();
+        req.flash('success', 'You need log in now');
+        res.redirect('/login');
     } catch (error) {
         next(error);
     }

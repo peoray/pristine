@@ -17,6 +17,7 @@ passport.deserializeUser(async (id, done) => {
 
 passport.use('local', new LocalStrategy(async (username, password, done) => {
     try {
+        // check if email exists
         const user = await User.findOne({
             'local.username': username
         });
@@ -30,6 +31,11 @@ passport.use('local', new LocalStrategy(async (username, password, done) => {
         if (!isValid) {
             return done(null, false, {
                 message: 'unknown password'
+            });
+        }
+        if (!user.local.active) {
+            return done(null, false, {
+                message: 'You need to verify email first!'
             });
         }
         return done(null, user);
