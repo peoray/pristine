@@ -12,7 +12,6 @@ require('./config/passport-local');
 // require('./config/passport-google');
 // require('./config/passport-fb');
 
-// requiring mongoose db
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 // configure mongoose
