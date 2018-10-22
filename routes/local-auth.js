@@ -63,7 +63,7 @@ router.post('/register', async (req, res, next) => {
             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
             `;
         // send the email
-        await mailer.sendMail('peoray@yahoo.com', result.value.email, 'Please, verify your email', html)
+        await mailer.sendMail('peorayy@gmail.com', result.value.email, 'Please, verify your email', html)
         req.flash('success', 'Please check your email');
         res.redirect('/verify');
     } catch (error) {
