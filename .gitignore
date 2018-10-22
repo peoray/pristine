@@ -3,4 +3,4 @@ note.md
 user_stories.md
 .env
 questions.md
-package-lock.json
+/package-lock.json
