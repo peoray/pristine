@@ -33,7 +33,7 @@ router.post('/register', async (req, res, next) => {
         }
 
         const user = await User.findOne({
-            'local.email': result.value.email
+            'email': result.value.email
         });
 
         if (user) {
@@ -50,8 +50,7 @@ router.post('/register', async (req, res, next) => {
         const secretToken = randomstring.generate();
         result.value.secretToken = secretToken;
         result.value.active = false;
-        const newUser = await new User();
-        newUser.local = result.value;
+        const newUser = await new User(result.value);
         await newUser.save();
         // compose email
         const html = `
@@ -82,7 +81,7 @@ router.post('/verify', async (req, res, next) => {
         } = req.body;
         // check if email account matches the token
         const user = await User.findOne({
-            'local.secretToken': secretToken
+            'secretToken': secretToken
         });
         // if it doesn't
         if (!user) {
@@ -90,8 +89,8 @@ router.post('/verify', async (req, res, next) => {
             return res.redirect('/verify');
         }
         // if it does
-        user.local.active = true;
-        user.local.secretToken = '';
+        user.active = true;
+        user.secretToken = '';
         await user.save();
         req.flash('success', 'You need log in now');
         res.redirect('/login');

@@ -9,8 +9,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 var logger = require('morgan');
 require('./config/passport-local');
-// require('./config/passport-google');
-// require('./config/passport-fb');
+require('./config/passport-google');
+require('./config/passport-fb');
 
 // requiring mongoose db
 const mongoose = require('mongoose');
@@ -60,6 +60,7 @@ app.use((req, res, next) => {
 
 // middleware for requiring routes
 app.use(require('./routes/local-auth'));
+app.use(require('./routes/social-auth'));
 app.use(require('./routes/misc'));
 
 // configure port for server to listen

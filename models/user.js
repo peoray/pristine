@@ -6,14 +6,11 @@ const {
 } = mongoose;
 
 const userSchema = new Schema({
-    local: {
         name: {
             type: String,
         },
         username: {
-            type: String,
-            index: true,
-            unique: true
+            type: String
         },
         email: {
             type: String,
@@ -28,20 +25,15 @@ const userSchema = new Schema({
         },
         active: {
             type: Boolean
+        },
+        googleId: {
+            type: String,
+            unique: true
+        },
+        facebookId: {
+            type: String,
+            unique: true
         }
-    },
-    google: {
-        id: String,
-        // token: String,
-        email: String,
-        username: String
-    },
-    facebook: {
-        id: String,
-        // token: String,
-        email: String,
-        username: String
-    }
 });
 
 module.exports = mongoose.model('User', userSchema);
