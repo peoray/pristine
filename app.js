@@ -17,7 +17,9 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 // configure mongoose
 mongoose.connect('mongodb://localhost:27017/auth_demo', {
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
     })
     .then(() => console.log('You are connected!'))
     .catch(err => {

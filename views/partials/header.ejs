@@ -29,7 +29,7 @@
                 <% } else { %>
                 <li>
                     <a href="#">Login as
-                        <%= currentUser.username %></a>
+                        <%= currentUser.username || currentUser.name.split(" ")[0] %></a>
                 </li>
                 <li>
                     <a href='/logout'>Logout</a>

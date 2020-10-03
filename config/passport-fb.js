@@ -23,12 +23,12 @@ passport.use(new FacebookStrategy({
         clientSecret: process.env.FACEBOOK_APP_SECRET
     },
     (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
         User.findOne({
             'facebookId': profile.id
         }).then(currentUser => {
             if (currentUser) {
                 return done(null, currentUser);
+                // console.log(`Is this current user ${currentUser}`)
             }
             new User({
                 username: profile.username,

@@ -25,13 +25,15 @@ router.get('/login', middleware.isNotLoggedIn, (req, res) => res.render('login')
 // handles user sign up
 router.post('/register', async (req, res, next) => {
     try {
-        const result = Joi.validate(req.body, userSchema);
-
+        // const result = Joi.validate(req.body, userSchema);
+        const result = userSchema.validate(req.body);
+        
         if (result.error) {
             req.flash('error', 'Invalid data. Please try again!');
             return res.redirect('/register');
         }
 
+        console.table(result.value)
         const user = await User.findOne({
             'email': result.value.email
         });
